@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import User from "../../database/models/User.js";
 import { signupValidation, loginValidation } from "../validations/user.js";
 
@@ -43,7 +44,20 @@ const postUserLogin = async (req, res) => {
   } else if (!validPass) {
     return res.status(400).send("invalid password or email");
   }
-  res.send("Logged in");
+
+  const token = jwt.sign({ _id: user._id }, process.env.SECRET);
+  res.header("auth-token", token).send(token);
 };
 
-export { postUserSignup, postUserLogin };
+const getPosts = (req, res) => {
+  // res.json({
+  //   posts: {
+  //     title: "My first post",
+  //     description: "This is a post I made",
+  //   },
+  // });
+  // User.findById({ _id: req.user });
+  res.send(req.user);
+};
+
+export { postUserSignup, postUserLogin, getPosts };
