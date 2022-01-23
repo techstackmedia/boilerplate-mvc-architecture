@@ -1,5 +1,5 @@
-import app from "../app.js";
 import dotenv from "dotenv";
+import app from "../app.js";
 import debug from "debug";
 
 const log = debug("app:port");

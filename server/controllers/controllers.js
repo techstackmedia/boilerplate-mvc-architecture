@@ -2,10 +2,6 @@ import bcrypt from "bcryptjs";
 import User from "../../database/models/User.js";
 import { signupValidation, loginValidation } from "../validations/user.js";
 
-const getUsers = (req, res) => {
-  res.send("Hello World");
-};
-
 const postUserSignup = async (req, res) => {
   const { error } = signupValidation(req.body);
   const emailExist = await User.findOne({ email: req.body.email });
@@ -35,16 +31,19 @@ const postUserSignup = async (req, res) => {
 
 const postUserLogin = async (req, res) => {
   const { error } = loginValidation(req.body);
+  const user = await User.findOne({ email: req.body.email });
+  const validPass = await bcrypt.compare(req.body.password, user.password);
+
   if (error) {
     return res.status(400).send(error.details[0].message);
-  }
-
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) {
+  } else if (!user) {
     return res
       .status(400)
       .json({ status: "fail", message: "Invalid Password or Email" });
+  } else if (!validPass) {
+    return res.status(400).send("invalid password or email");
   }
+  res.send("Logged in");
 };
 
 export { postUserSignup, postUserLogin };

@@ -2,8 +2,8 @@ import Joi from "joi";
 
 const signupValidation = data => {
   const schema = Joi.object({
-    username: Joi.string().alphanum().required(),
-    email: Joi.string().email().required(),
+    username: Joi.string().trim().alphanum().required(),
+    email: Joi.string().trim().email().required(),
     password: Joi.string().alphanum().min(6).required(),
   });
   return schema.validate(data);
@@ -12,7 +12,7 @@ const signupValidation = data => {
 
 const loginValidation = data => {
   const schema = Joi.object({
-    email: Joi.string().email().required(),
+    email: Joi.string().trim().email().required(),
     password: Joi.string().alphanum().min(6).required(),
   });
   return schema.validate(data);
