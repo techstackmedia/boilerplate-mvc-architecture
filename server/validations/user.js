@@ -7,7 +7,6 @@ const signupValidation = data => {
     password: Joi.string().alphanum().min(6).required(),
   });
   return schema.validate(data);
-  // schema.validate(req.body);
 };
 
 const loginValidation = data => {

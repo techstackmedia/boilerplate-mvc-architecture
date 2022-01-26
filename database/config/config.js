@@ -6,11 +6,14 @@ const db = debug("app:db");
 
 dotenv.config({ path: "./bin/.env" });
 
-const dbUrl = mongoose
-  .connect(
-    `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@cluster0.n5uqo.mongodb.net/${process.env.DATABASE}?retryWrites=true&w=majority`
-  )
-  .then(() => db("Database, mongoose connected to server..."))
-  .catch((err) => db(`Database, mongoose unable to connect server ${err}`));
+const dbUrl = mongoose.connect(
+  `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@cluster0.n5uqo.mongodb.net/${process.env.DATABASE}?retryWrites=true&w=majority`
+);
+try {
+  await dbUrl;
+  db("Database, mongoose connected to server...");
+} catch(err) {
+  db(`Database, mongoose unable to connect server ${err}`);
+}
 
 export default dbUrl;

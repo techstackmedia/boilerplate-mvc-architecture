@@ -14,7 +14,7 @@ const postUserSignup = async (req, res) => {
   } else if (emailExist) {
     return res.status(400).json({
       status: "fail",
-      message: "Invalid email or password is not alphanumeric",
+      message: "Unauthorized access, please check your email or password",
     });
   } else {
     const salt = await bcrypt.genSalt(10);
